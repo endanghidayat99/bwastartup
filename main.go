@@ -2,6 +2,7 @@ package main
 
 import (
 	"bwastartup/auth"
+	"bwastartup/campaign"
 	"bwastartup/handler"
 	"bwastartup/helper"
 	"bwastartup/user"
@@ -24,26 +25,21 @@ func main() {
 	}
 
 	userRepository := user.NewRepository(db)
+	campaignRepository := campaign.NewRepository(db)
 	userService := user.NewService(userRepository)
 	authService := auth.NewService()
 
-	token, err := authService.ValidateToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyMX0.3tDO2sf0eJuxK2SFuc2tY8Ue4fIYOYHMwqF2APskOY4")
-	if err != nil {
-		fmt.Println("ERROR")
-		fmt.Println("ERROR")
-		fmt.Println("ERROR")
-	}
+	campaigns, err := campaignRepository.FindByUserId(1)
 
-	if token.Valid {
-		fmt.Println("VALID")
-		fmt.Println("VALID")
-		fmt.Println("VALID")
-	}
-
-	if !token.Valid {
-		fmt.Println("INVALID")
-		fmt.Println("INVALID")
-		fmt.Println("INVALID")
+	fmt.Println("debug")
+	fmt.Println("debug")
+	fmt.Println("debug")
+	fmt.Println(len(campaigns))
+	for _, campaign := range campaigns {
+		fmt.Println(campaign.Name)
+		if len(campaign.CampaignImages) > 0 {
+			fmt.Println(campaign.CampaignImages[0].FileName)
+		}
 	}
 
 	userHandler := handler.NewUserHandler(userService, authService)
