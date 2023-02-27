@@ -6,7 +6,6 @@ import (
 	"bwastartup/handler"
 	"bwastartup/helper"
 	"bwastartup/user"
-	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
@@ -33,10 +32,9 @@ func main() {
 	authService := auth.NewService()
 	campaignService := campaign.NewService(campaignRepository)
 
-	campaigns, _ := campaignService.FindCampaigns(2)
-	fmt.Println(len(campaigns))
 	//handler
 	userHandler := handler.NewUserHandler(userService, authService)
+	campaignHandler := handler.NewCampaignHandler(campaignService)
 
 	//router
 	router := gin.Default()
@@ -47,12 +45,14 @@ func main() {
 	api.POST("/sessions", userHandler.Login)
 	api.POST("/email_checkers", userHandler.CheckEmailAvailability)
 	api.POST("/avatars", authMiddleware(authService, userService), userHandler.UploadAvatar)
+
+	api.GET("/campaigns", campaignHandler.GetCampaigns)
 	router.Run()
 	//
 	//fmt.Println("Connection to Database is good")
 	//
 	//var users []user.User
-	//length := len(users)
+	//length := len(users)nsom
 	//fmt.Println(length)
 	//db.Find(&users)
 	//length = len(users)
