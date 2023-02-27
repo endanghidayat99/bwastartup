@@ -24,26 +24,21 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
+	//repository
 	userRepository := user.NewRepository(db)
 	campaignRepository := campaign.NewRepository(db)
+
+	//service
 	userService := user.NewService(userRepository)
 	authService := auth.NewService()
+	campaignService := campaign.NewService(campaignRepository)
 
-	campaigns, err := campaignRepository.FindByUserId(1)
-
-	fmt.Println("debug")
-	fmt.Println("debug")
-	fmt.Println("debug")
+	campaigns, _ := campaignService.FindCampaigns(2)
 	fmt.Println(len(campaigns))
-	for _, campaign := range campaigns {
-		fmt.Println(campaign.Name)
-		if len(campaign.CampaignImages) > 0 {
-			fmt.Println(campaign.CampaignImages[0].FileName)
-		}
-	}
-
+	//handler
 	userHandler := handler.NewUserHandler(userService, authService)
 
+	//router
 	router := gin.Default()
 
 	api := router.Group("/api/v1")
