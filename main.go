@@ -50,6 +50,8 @@ func main() {
 	api.GET("/campaigns", campaignHandler.GetCampaigns)
 	api.GET("/campaigns/:id", campaignHandler.GetCampaignById)
 	api.POST("/campaigns", authMiddleware(authService, userService), campaignHandler.CreateCampaign)
+	api.PUT("/campaigns/:id", authMiddleware(authService, userService), campaignHandler.UpdateCampaign)
+
 	router.Run()
 	//
 	//fmt.Println("Connection to Database is good")
