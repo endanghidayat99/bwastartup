@@ -131,7 +131,7 @@ func (h *userHandler) UploadAvatar(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
-	//seharusnya dari JWT
+
 	currentUser := c.MustGet("currentUser").(user.User)
 	userID := currentUser.ID
 
