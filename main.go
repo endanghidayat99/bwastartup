@@ -34,13 +34,13 @@ func main() {
 	userService := user.NewService(userRepository)
 	authService := auth.NewService()
 	campaignService := campaign.NewService(campaignRepository)
-	paymentService := payment.NewService(transactionRepository, campaignRepository)
+	paymentService := payment.NewService()
 	transactionService := transaction.NewService(transactionRepository, campaignRepository, paymentService)
 
 	//handler
 	userHandler := handler.NewUserHandler(userService, authService)
 	campaignHandler := handler.NewCampaignHandler(campaignService)
-	transactionHandler := handler.NewTransactionHandler(transactionService, paymentService)
+	transactionHandler := handler.NewTransactionHandler(transactionService)
 
 	//router
 	router := gin.Default()
